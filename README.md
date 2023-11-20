@@ -1,5 +1,5 @@
 # Thug Hunter RS
-'Thug Hunter' is the silly name for this silly project. It's expressed purpose is to provide a quick way to see how much a given osu! user is deranking by comparing their 'duel rank' with their global rank, and giving them a derank 'rating' in the form of a percentage. 
+'Thug Hunter' is the silly name for this silly project. Its expressed purpose is to provide a quick way to see how much a given osu! user is deranking by comparing their 'duel rank' with their global rank, and giving them a derank 'rating' in the form of a percentage. 
 
 ## Download and Run Thug-Hunter-RS locally
 You will need a working Rust and Cargo installation for this.
