@@ -19,4 +19,4 @@ Run the project:
 `cargo run -- <OSU_API_KEY>`
 Replace OSU_API_KEY with your v1 osu api key. Instructions for getting an API key can be found on the Osu API git repo: [Osu API v1](https://github.com/ppy/osu-api/wiki#requesting-access)
 
-The project will boot up on your localhost on port 3000. To get the global score of a given user, navigate to `localhost:3000/<username>` in your browser, with <username> replaced with the username of whatever player you're interested in seeing the stats of. (Right now this just returns the user's global rank. Eventually should return duel rank, global rank, and derank %)
+The project will boot up on your localhost on port 3000. To get the global score of a given user, navigate to `localhost:3000/<username>` in your browser, with `<username>` replaced with the username of whatever player you're interested in seeing the stats of. (Right now this just returns the user's global rank. Eventually should return duel rank, global rank, and derank %)
