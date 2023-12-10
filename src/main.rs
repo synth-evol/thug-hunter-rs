@@ -3,6 +3,7 @@ use axum::{
     routing::get,
     Router,
     http::StatusCode,
+    response::{IntoResponse, Response}
 };
 use std::{
     env,
@@ -12,6 +13,22 @@ use rosu::Osu;
 
 struct AppState{
     client: Osu,
+}
+
+
+enum ApiError {
+    ErrorOsu(StatusCode, String),
+    ErrorNotFound(StatusCode, String),
+}
+
+impl IntoResponse for ApiError {
+    fn into_response(self) -> Response {
+        let variant = match self {
+            ApiError::ErrorOsu(code, body) => (code, body),
+            ApiError::ErrorNotFound(code, body) => (code, body) 
+        };    
+    variant.into_response()
+    }
 }
 
 #[tokio::main]
@@ -27,18 +44,25 @@ async fn main() {
         .await
         .unwrap();
 }
-async fn global_score(Path(user_name): Path<String>, State(state): State<Arc<AppState>>) -> Result<String, StatusCode> {
+
+async fn global_score(Path(user_name): Path<String>, State(state): State<Arc<AppState>>) -> Result<String, ApiError> {
 
     let user_req = state.client.user(user_name).await;
 
     let user_opt = match user_req {
         Ok(x) => x,
-        Err(e) =>  return Err(StatusCode::INTERNAL_SERVER_ERROR),
+        Err(e) => {
+            let wrapper = ApiError::ErrorOsu(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()); 
+            return Err(wrapper)
+        }
     };
 
     let user = match user_opt {
         Some(x) => x,
-        None => return Err(StatusCode::NOT_FOUND),
+        None => {
+            let wrapper = ApiError::ErrorNotFound(StatusCode::NOT_FOUND, String::from("No user with that username found"));
+            return Err(wrapper);
+        }
     };
 
     let score = user.pp_rank.to_string();
